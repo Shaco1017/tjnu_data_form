@@ -4,7 +4,6 @@ import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -14,7 +13,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import shaco.tjnu_data_form.annoation.Comment;
 
 /**
  * 学校基本情况 实体类。
@@ -38,7 +36,6 @@ public class Jj1001Dx implements Serializable {
     /**
      * 学校（机构）标识码
      */
-    @Comment("名称")
     private String schoolId;
 
     /**

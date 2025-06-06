@@ -48,7 +48,7 @@ public class JjTest implements Serializable {
      * 代码
      */
     @Column("代码_数量_数量_数量")
-    private String 代码_数量_数量_数量;
+    private String 代码数量数量数量;
 
     /**
      * 数量

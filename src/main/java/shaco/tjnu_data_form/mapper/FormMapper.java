@@ -12,5 +12,5 @@ import shaco.tjnu_data_form.entity.User;
  * @since 1.0.0
  */
 public interface FormMapper extends BaseMapper<Form> {
-    User findUser(@Param("username")String username);
+
 }

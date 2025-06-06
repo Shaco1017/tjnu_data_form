@@ -31,7 +31,10 @@ public class mybatis_gene {
         //创建配置内容
         GlobalConfig globalConfig = new GlobalConfig();
 
-
+        globalConfig.setControllerOverwriteEnable(true);
+        globalConfig.setEntityOverwriteEnable(true);
+        globalConfig.setMapperOverwriteEnable(true);
+        globalConfig.setServiceOverwriteEnable(true);
         //
         globalConfig.getJavadocConfig()
                 .setAuthor("shaco")
@@ -63,6 +66,7 @@ public class mybatis_gene {
         globalConfig.getServiceConfig()
 //                .setClassPrefix("dldl")
                 .setClassSuffix("Service")
+
                 .setSuperClass(IService.class);
         globalConfig.getServiceImplConfig()
 //                .setClassPrefix("dldl")
@@ -86,12 +90,11 @@ public class mybatis_gene {
 
         //设置根包
         globalConfig.getPackageConfig()
-                .setBasePackage("com.test");
+                .setBasePackage("shaco.tjnu_data_form");
 
         //设置表前缀和只生成哪些表，setGenerateTable 未配置时，生成所有表
         globalConfig.getStrategyConfig()
-                .setTablePrefix("tb_")
-                .setGenerateTable("tb_account", "tb_account_session");
+                .setTablePrefix("sys_");
 
         //设置生成 entity 并启用 Lombok
         globalConfig.enableEntity()
