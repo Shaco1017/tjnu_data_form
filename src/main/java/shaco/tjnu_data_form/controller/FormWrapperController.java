@@ -1,123 +1,63 @@
 package shaco.tjnu_data_form.controller;
 
 import com.mybatisflex.core.query.QueryWrapper;
-import net.sourceforge.pinyin4j.PinyinHelper;
-import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
-import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
-import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
-import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
+import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
 import shaco.tjnu_data_form.entity.FormStructure;
 import shaco.tjnu_data_form.entity.FormWrapper;
 import shaco.tjnu_data_form.Util.MyInvocationHandler;
-import shaco.tjnu_data_form.mapper.FormMapper;
 import shaco.tjnu_data_form.mapper.FormStructureMapper;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static shaco.tjnu_data_form.Util.ChineseToPinyinInitials.convertChineseToPinyinInitials;
+import static shaco.tjnu_data_form.Util.ChineseToPinyinInitials.getPinyinInitial;
 
 @CrossOrigin
 @RestController
 @RequestMapping("/form_wrapper")
 public class FormWrapperController {
     @Autowired
-    FormMapper formMapper;
-
-    private FormWrapper formWrapper;
-
-    private QueryWrapper queryWrapper;
-
-    /**
-     * 查询所有报表表。
-     *
-     * @return 所有数据
-     */
-    @GetMapping("formdata")
-    public FormWrapper list(@RequestParam int formId, @RequestParam int formYear) {
-        queryWrapper = new QueryWrapper();
-        queryWrapper.select().from("Form").where("Form.formId=?", formId);
-
-        formMapper.selectListByQuery(queryWrapper);
-
-        formWrapper = new FormWrapper();
-        List<String> formColumnName = new ArrayList<>();
-        formColumnName.add("abc");
-        List formRow = new ArrayList();
-        formRow.add(1);
-        List<List<?>> formRows = new ArrayList<>();
-        formRows.add(formRow);
-        formWrapper.setFormName("form");
-        formWrapper.setFormStatisticalTime(2025);
-        formWrapper.setFormId("formId");
-        formWrapper.setFormColumnName(formColumnName);
-        formWrapper.setFormRows(formRows);
-        return formWrapper;
-    }
-
-
-    @Autowired
     private FormStructureMapper formStructureMapper;
 
     /**
-     * 查询所有报表表。
+     * 查询该用户有权限编辑的所有报表。
      *
-     * @return 所有数据
+     * @param userToken 用户token
+     * @return List<FormStructure>
      */
-    @GetMapping("test")
-    public List test() {
-        queryWrapper = new QueryWrapper();
-        queryWrapper.select("form_id,form_name").from("form_structure");
+    @GetMapping("getFormList")
+    public List<FormStructure> getFormList(@RequestParam("userToken") String userToken) {
+        // todo 解析usertoken 校验用户权限
+
+        QueryWrapper queryWrapper = new QueryWrapper();
+        // todo 传入用户权限参数
+        queryWrapper.select("form_id,form_name").from("form_structure").where("form_permissions=?", "");
 
         return formStructureMapper.selectListByQuery(queryWrapper);
     }
 
+
+    private Class<?> clazz;
+
     /**
-     * 获取中文首字母
+     * 根据表Id 表类型 表年份 查询报表的 结构和数据
      *
-     * @param name 需要转换的中文
-     * @return 首字母结果
-     **/
-    public static String getPinyinInitial(String name) {
-        // 创建格式化对象
-        HanyuPinyinOutputFormat outputFormat = new HanyuPinyinOutputFormat();
-        //设置大小写格式
-        outputFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);
-        //设置声调格式
-        outputFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
-        // 放置输入结果
-        StringBuilder result = new StringBuilder();
-        // 字符数组
-        char[] charArray = name.toCharArray();
-        // 遍历字符
-        for (char c : charArray) {
-            // 中文会被变成拼音首字母，非中文会被直接拼接在结果字符串中
-            if (Character.toString(c).matches("[\\u4E00-\\u9FA5]+")) {
-                String[] pinyinArray = new String[0];
-                try {
-                    pinyinArray = PinyinHelper.toHanyuPinyinStringArray(c, outputFormat);
-                } catch (BadHanyuPinyinOutputFormatCombination badHanyuPinyinOutputFormatCombination) {
-                    badHanyuPinyinOutputFormatCombination.printStackTrace();
-                }
-                if (pinyinArray != null) {
-                    result.append(pinyinArray[0].charAt(0));
-                }
-            } else {
-                result.append(c);
-            }
-        }
-        return result.toString();
-    }
-
-
+     * @param formId              表Id
+     * @param formType            表类型
+     * @param formStatisticalTime 统计时点
+     * @return 所有数据
+     */
     @GetMapping("getForm")
-    public FormWrapper getForm(@RequestParam("formId") String formId) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+    public FormWrapper getForm(@RequestParam("formId") String formId, @RequestParam("formType") String formType, @RequestParam("formStatisticalTime") int formStatisticalTime) throws ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
         FormWrapper formWrapper = new FormWrapper();
         /*
         获取表信息：
@@ -143,10 +83,9 @@ public class FormWrapperController {
         QueryWrapper formDataQueryWrapper = new QueryWrapper();
         formDataQueryWrapper.select().from(getPinyinInitial(formId + "_dx"));
 
-
         /** 通过反射调用mapper查数据 **/
         String mapperStr = "shaco.tjnu_data_form.mapper." + convertChineseToPinyinInitials(formId) + "DxMapper";
-        Class<?> clazz = Class.forName(mapperStr);
+        clazz = Class.forName(mapperStr);
 
         /**创建动态代理并使用反射**/
         MyInvocationHandler myInvocationHandler = new MyInvocationHandler();
@@ -163,6 +102,34 @@ public class FormWrapperController {
 
         formWrapper.setFormStatisticalTime(2024);
         return formWrapper;
+    }
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    /**
+     * 根据表Id 表类型 表年份 查询报表的 结构和数据
+     *
+     * @param formId              表Id
+     * @param formType            表类型
+     * @param formStatisticalTime 统计时点
+     * @return 所有数据
+     */
+    @PutMapping("saveOrUpdate")
+    public boolean saveOrUpdate(@RequestParam("formId") String formId, @RequestParam("formType") String formType, @RequestParam("formStatisticalTime") int formStatisticalTime, @RequestBody Object objIn) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        /** 通过反射调用mapper查数据 **/
+        String serviceStr = "shaco.tjnu_data_form.service." + convertChineseToPinyinInitials(formId) + "DxService";
+//        WebApplicationContext wac = ContextLoader.getCurrentWebApplicationContext();
+        clazz = Class.forName(serviceStr);
+        String entityStr = "shaco.tjnu_data_form.entity." + convertChineseToPinyinInitials(formId) + "DX";
+        Class<?> entityClz = Class.forName(entityStr);
+        Object serviceBean = applicationContext.getBean(clazz);
+
+        Method saveOrUpdate = clazz.getDeclaredMethod("saveOrUpdate", entityClz);
+//        saveOrUpdate.setAccessible(true);
+//        assert wac != null;
+
+        return (boolean) saveOrUpdate.invoke(serviceBean, objIn);
     }
 }
 

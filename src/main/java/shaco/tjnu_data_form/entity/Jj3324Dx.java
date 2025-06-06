@@ -111,7 +111,7 @@ public class Jj3324Dx implements Serializable {
     /**
      * 统计时点
      */
-    private Date statisticalTime;
+    private int statisticalTime;
 
     /**
      * 报表类型(校区，续，续1，续2)
