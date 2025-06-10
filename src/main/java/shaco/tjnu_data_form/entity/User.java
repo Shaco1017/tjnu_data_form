@@ -3,6 +3,7 @@ package shaco.tjnu_data_form.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -67,4 +68,21 @@ public class User implements Serializable {
      */
     private Timestamp createTime;
 
+    /**
+     * User 验证构造器
+     * todo User DAO DTO?
+     *
+     * @param userId
+     * @param userAccount
+     * @param userName
+     * @param departmentId
+     * @param status
+     */
+    public User(String userId, String userAccount, String userName, String departmentId, Integer status) {
+        this.userId = userId;
+        this.userAccount = userAccount;
+        this.userName = userName;
+        this.departmentId = departmentId;
+        this.status = status;
+    }
 }
