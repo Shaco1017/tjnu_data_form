@@ -1,34 +1,21 @@
 package shaco.tjnu_data_form.interceptor;
 
-
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
+import shaco.tjnu_data_form.Util.ChineseToPinyinInitials;
 import shaco.tjnu_data_form.Util.JwtUtil;
 
-
 @Component
-public class TokenInterceptor implements HandlerInterceptor {
-
+public class FormDataInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper(response);
-        String token = request.getHeader("token");
-        if (token.isEmpty()) {
-            wrapper.sendRedirect("fail/token/null");
-            System.out.println("null token");
-            return false;
-        }
-        if (!JwtUtil.verify(token)) {
-            wrapper.sendRedirect("fail/token/invalid");
-            System.out.println("invalid token");
-            return false;
-        }
-        System.out.println("valid token");
-        return true;
+        wrapper.sendRedirect(ChineseToPinyinInitials.convertChineseToPinyinInitials(request.getParameter("formId")) + "/getFormData");
+        return false;
     }
 
     @Override

@@ -1,18 +1,15 @@
 package shaco.tjnu_data_form.controller;
 
 import com.mybatisflex.core.paginate.Page;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import com.mybatisflex.core.query.QueryWrapper;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import shaco.tjnu_data_form.entity.FormStructure;
 import shaco.tjnu_data_form.service.FormStructureService;
-import org.springframework.web.bind.annotation.RestController;
+
 import java.util.List;
+
+import static shaco.tjnu_data_form.Util.ChineseToPinyinInitials.getPinyinInitial;
 
 /**
  * 报表结构表 控制层。
@@ -90,6 +87,13 @@ public class FormStructureController {
     @GetMapping("page")
     public Page<FormStructure> page(Page<FormStructure> page) {
         return formStructureService.page(page);
+    }
+
+    @GetMapping("getFormStructure")
+    public FormStructure getFormStructure(@RequestParam("formId") String formId) {
+        QueryWrapper wrapper = new QueryWrapper();
+        wrapper.select().from("form_structure").where("form_id=?", formId);
+        return formStructureService.getMapper().selectOneByQuery(wrapper);
     }
 
 }

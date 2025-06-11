@@ -22,7 +22,7 @@ public class MyInvocationHandler implements InvocationHandler {
     }
 
 
-    public void setTarget(Class clazz) {
+    public void setTarget(Class<?> clazz) {
         target = session.getMapper(clazz);
     }
 
