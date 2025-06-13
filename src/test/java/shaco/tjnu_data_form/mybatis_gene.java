@@ -31,7 +31,7 @@ public class mybatis_gene {
         //创建配置内容
         GlobalConfig globalConfig = new GlobalConfig();
 
-        globalConfig.setControllerOverwriteEnable(true);
+//        globalConfig.setControllerOverwriteEnable(true);
         globalConfig.setEntityOverwriteEnable(true);
         globalConfig.setMapperOverwriteEnable(true);
         globalConfig.setServiceOverwriteEnable(true);

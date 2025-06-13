@@ -4,10 +4,8 @@ import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import shaco.tjnu_data_form.Util.ChineseToPinyinInitials;
 import shaco.tjnu_data_form.common.Result;
 import shaco.tjnu_data_form.entity.Jj1001Dx;
-import shaco.tjnu_data_form.entity.Jj3324Dx;
 import shaco.tjnu_data_form.service.Jj1001DxService;
 
 import java.util.List;

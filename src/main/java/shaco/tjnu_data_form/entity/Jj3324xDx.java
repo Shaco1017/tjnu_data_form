@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 高等职业教育专科分专业学生数 实体类。
+ * 教基3324续_大学 实体类。
  *
  * @author shaco
  * @since 1.0.0
@@ -23,8 +23,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table("jj3324_dx")
-public class Jj3324Dx implements Serializable {
+@Table("jj3324x_dx")
+public class Jj3324xDx implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -111,11 +111,6 @@ public class Jj3324Dx implements Serializable {
      * 统计时点
      */
     private Integer statisticalTime;
-
-    /**
-     * 报表类型(校区，续，续1，续2)
-     */
-    private String tableType;
 
     private Timestamp createTime;
 

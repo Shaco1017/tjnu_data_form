@@ -37,14 +37,46 @@ public class FormStructure implements Serializable {
      */
     private String formId;
 
+    private String formCode;
+
     /**
      * 报表名称
      */
     private String formName;
 
+    /**
+     * 报表类型(校区，续，续1，续2)
+     */
+    private String formType;
+
+    /**
+     * 填报类型
+     */
+    private String entryType;
+
     private String formColumn;
 
     private String formRow;
+
+    /**
+     * 报表权限
+     */
+    private String formPermissions;
+
+    /**
+     * 指标解释
+     */
+    private String indicatorExplanation;
+
+    /**
+     * 校验关系
+     */
+    private String validationRelationship;
+
+    /**
+     * 填报说明
+     */
+    private String fillingInstructions;
 
     /**
      * 报表创建时间

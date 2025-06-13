@@ -3,6 +3,11 @@ spring:
   application:
     name: tjnu_data_form
     version: 1.0.0
+  servlet:
+    multipart:
+      max-file-size: 1MB
+      max-request-size: 10MB
+      location: D:\WorkSpace\TJNUProjectWorkSpace\tjnu_data_form\src\main\resources\UploadDownloadFiles
   datasource:
     url: jdbc:mysql://localhost:3306/form_system
     username: root

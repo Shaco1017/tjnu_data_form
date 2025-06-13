@@ -3,6 +3,7 @@ package shaco.tjnu_data_form.entity;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -67,4 +68,12 @@ public class OperationLog implements Serializable {
      */
     private Timestamp updateTime;
 
+
+    public OperationLog(String operationId, String targetFormId, String type, String content, String userId) {
+        this.operationId = operationId;
+        this.targetFormId = targetFormId;
+        this.type = type;
+        this.content = content;
+        this.userId = userId;
+    }
 }

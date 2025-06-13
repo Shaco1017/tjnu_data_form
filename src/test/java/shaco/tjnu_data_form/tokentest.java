@@ -1,6 +1,6 @@
 package shaco.tjnu_data_form;
 
-import shaco.tjnu_data_form.Util.JwtUtil;
+import shaco.tjnu_data_form.util.JwtUtil;
 
 public class tokentest {
     public static void main(String[] args) {

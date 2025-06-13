@@ -3,9 +3,9 @@ package shaco.tjnu_data_form.controller;
 import com.mybatisflex.core.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import shaco.tjnu_data_form.Util.JwtUtil;
+import shaco.tjnu_data_form.common.UserDTO;
+import shaco.tjnu_data_form.util.JwtUtil;
 import shaco.tjnu_data_form.common.Result;
-import shaco.tjnu_data_form.entity.User;
 import shaco.tjnu_data_form.mapper.FormStructureMapper;
 
 @CrossOrigin
@@ -23,7 +23,7 @@ public class FormListController {
      */
     @GetMapping("getFormList")
     public Result getFormList(@RequestHeader("token") String userToken, @RequestParam("formType") String formType) {
-        User user = JwtUtil.verifyAndGetUser(userToken);
+        UserDTO user = JwtUtil.verifyAndGetUser(userToken);
         QueryWrapper queryWrapper = new QueryWrapper();
         assert user != null;
         if (!formType.isEmpty()) {

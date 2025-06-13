@@ -1,10 +1,9 @@
-package shaco.tjnu_data_form.Util;
+package shaco.tjnu_data_form.util;
 
 import cn.hutool.jwt.JWT;
+import shaco.tjnu_data_form.common.UserDTO;
 import shaco.tjnu_data_form.entity.User;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -75,7 +74,7 @@ public class JwtUtil {
      * @param token token
      * @return userDto
      */
-    public static User verifyAndGetUser(String token) {
+    public static UserDTO verifyAndGetUser(String token) {
         if (!verify(token)) return null;
         // 解析数据
         JWT jwt = JWT.of(token);
@@ -85,7 +84,7 @@ public class JwtUtil {
         String departmentId = jwt.getPayload("department_id").toString();
         Integer status = Integer.valueOf(jwt.getPayload("status").toString());
         // 返回用户信息
-        return new User(userId, userAccount, userName, departmentId, status);
+        return new UserDTO(userId, userAccount, userName, departmentId, status);
     }
 
 }

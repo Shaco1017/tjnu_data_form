@@ -9,8 +9,6 @@ import shaco.tjnu_data_form.service.FormStructureService;
 
 import java.util.List;
 
-import static shaco.tjnu_data_form.Util.ChineseToPinyinInitials.getPinyinInitial;
-
 /**
  * 报表结构表 控制层。
  *
@@ -88,6 +86,7 @@ public class FormStructureController {
     public Page<FormStructure> page(Page<FormStructure> page) {
         return formStructureService.page(page);
     }
+
 
     @GetMapping("getFormStructure")
     public FormStructure getFormStructure(@RequestParam("formId") String formId) {

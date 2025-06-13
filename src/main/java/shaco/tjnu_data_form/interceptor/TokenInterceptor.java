@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponseWrapper;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import shaco.tjnu_data_form.Util.JwtUtil;
+import shaco.tjnu_data_form.util.JwtUtil;
 
 
 @Component

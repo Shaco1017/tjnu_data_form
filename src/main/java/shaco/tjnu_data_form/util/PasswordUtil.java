@@ -1,4 +1,4 @@
-package shaco.tjnu_data_form.Util;
+package shaco.tjnu_data_form.util;
 
 import cn.hutool.crypto.digest.DigestUtil;
 
